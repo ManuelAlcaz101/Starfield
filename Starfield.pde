@@ -76,7 +76,7 @@ void initializeParticles() {
     particles[i] = new Particle(width / 2, height / 2);
   }
 }
-
+ 
 void keyPressed() {
   if (key == 'r' || key == 'R') {
     initializeParticles(); 
