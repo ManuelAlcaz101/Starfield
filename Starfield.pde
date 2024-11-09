@@ -1,79 +1,81 @@
 class Particle {
-  constructor(centerX, centerY) {
-    this.x = centerX;
-    this.y = centerY;
-    this.c = color(random(255), random(255), random(255), 255);
-    this.angle = random(TWO_PI);
-    this.speed = random(2, 5);
-    this.lifespan = 255;
+  float x, y;
+  color c;
+  float angle;
+  float speed;
+  float lifespan;
+
+  Particle(float centerX, float centerY) {
+    x = centerX;
+    y = centerY;
+    c = color(random(255), random(255), random(255), 255);
+    angle = random(TWO_PI);
+    speed = random(2, 5);
+    lifespan = 255;
   }
 
-  move() {
-    this.x += cos(this.angle) * this.speed;
-    this.y += sin(this.angle) * this.speed;
-    this.lifespan -= 3;
-    if (this.lifespan < 0) this.lifespan = 0;
+  void move() {
+    x += cos(angle) * speed;
+    y += sin(angle) * speed;
+    lifespan -= 3;
+    if (lifespan < 0) lifespan = 0;
   }
 
-  show() {
-    fill(this.c.levels[0], this.c.levels[1], this.c.levels[2], this.lifespan);
+  void show() {
+    fill(c, lifespan);
     noStroke();
-    ellipse(this.x, this.y, 10, 10);
+    ellipse(x, y, 10, 10);
   }
 }
 
 class OddballParticle extends Particle {
-  constructor(centerX, centerY) {
+  OddballParticle(float centerX, float centerY) {
     super(centerX, centerY);
-    this.c = color(255, 0, 0, 255);
+    c = color(255, 0, 0, 255);
   }
 
-  move() {
-    this.x += random(-5, 5);
-    this.y += random(-5, 5);
+  @Override
+  void move() {
+    x += random(-5, 5);
+    y += random(-5, 5);
   }
 
-  show() {
-    fill(this.c.levels[0], this.c.levels[1], this.c.levels[2], this.lifespan);
+  @Override
+  void show() {
+    fill(c, lifespan);
     noStroke();
-    ellipse(this.x, this.y, 20, 20);
+    ellipse(x, y, 20, 20);
   }
 }
 
-let particles = [];
-const numParticles = 300;
+Particle[] particles;
+int numParticles = 300;
 
-function setup() {
-  createCanvas(800, 600);
+void setup() {
+  size(800, 600);
   initializeParticles();
 }
 
-function draw() {
+void draw() {
   fill(0, 20);
   rect(0, 0, width, height);
   
-  for (let p of particles) {
+  for (Particle p : particles) {
     p.move();
     p.show();
   }
 }
 
-function initializeParticles() {
-  particles = [];
-  particles.push(new OddballParticle(width / 2, height / 2));
-  for (let i = 1; i < numParticles; i++) {
-    particles.push(new Particle(width / 2, height / 2));
+void initializeParticles() {
+  particles = new Particle[numParticles];
+  particles[0] = new OddballParticle(width / 2, height / 2);
+  for (int i = 1; i < particles.length; i++) {
+    particles[i] = new Particle(width / 2, height / 2);
   }
 }
 
-function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    initializeParticles();
-  }
-}
-
-function keyPressed() {
-  if (key === 'r' || key === 'R') {
+void keyPressed() {
+  if (key == 'r' || key == 'R') {
     initializeParticles();
   }
 }
