@@ -71,3 +71,9 @@ function keyPressed() {
     initializeParticles();
   }
 }
+
+function keyPressed() {
+  if (key === 'r' || key === 'R') {
+    initializeParticles();
+  }
+}
